@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
-    private int JumpCount, maxJumps = 1;
+    private int JumpCount;
 
     private Rigidbody2D rb;
     
@@ -69,9 +69,9 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Falling", true);
         }
         
-        if (Input.GetButtonDown("Jump") && JumpCount < maxJumps)
+        if (Input.GetButtonDown("Jump") && JumpCount < GameManager.instance.gameData.MaxJumps)
         {
-            rb.AddForce(Vector2.up * jumpForce);
+            rb.linearVelocity = new Vector2 (rb.linearVelocityX, jumpForce);
             animator.SetBool("Jump", true);
             JumpCount++;
         }
