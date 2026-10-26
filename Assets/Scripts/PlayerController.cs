@@ -4,7 +4,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
-    private int JumpCount;
+    private int jumpCount;
+    private int comboCount;
 
     private Rigidbody2D rb;
     
@@ -20,8 +21,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Move
         float inputX = Input.GetAxis("Horizontal");
+        if (comboCount > 0)
+        {
+            inputX = 0;
+        }
         rb.linearVelocityX = speed * inputX;
+        
         //Rotation
         if (inputX > 0)
         {
@@ -58,23 +65,53 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("Jump", false);
             animator.SetBool("Falling", false);
-            JumpCount = 0;
+            jumpCount = 0;
         }
         else
         {
-            if (JumpCount == 0)
+            if (jumpCount == 0)
             {
-                JumpCount += 1;
+                jumpCount += 1;
             }
             animator.SetBool("Falling", true);
         }
         
-        if (Input.GetButtonDown("Jump") && JumpCount < GameManager.instance.gameData.MaxJumps)
+        if (Input.GetButtonDown("Jump") && jumpCount < GameManager.instance.gameData.MaxJumps && comboCount == 0)
         {
             rb.linearVelocity = new Vector2 (rb.linearVelocityX, jumpForce);
             animator.SetBool("Jump", true);
-            JumpCount++;
+            jumpCount++;
+        }
+
+        //Attack
+        if (Input.GetButtonDown("Attack") && isGrounded)
+        {
+            comboCount  = Mathf.Clamp(comboCount+1, 0, 2);
+            animator.SetInteger("Combo", comboCount);
         }
         
+    }
+
+    public void FinishAttack1()
+    {
+        if (comboCount <= 1)
+        {
+            comboCount = 0;
+            animator.SetInteger("Combo", comboCount);
+        }
+    }
+
+    public void FinishAttack2()
+    {
+        comboCount = 0;
+        animator.SetInteger("Combo", comboCount);
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "Enemy")
+        {
+            //llamar a la funcion enemigo para recivir danyo
+        }
     }
 }
