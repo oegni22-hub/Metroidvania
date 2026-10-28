@@ -5,7 +5,15 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] protected float speed;
     [SerializeField] protected float distanceToAttack;
+    [SerializeField] protected float damage;
+    [SerializeField] protected float life;
+    [SerializeField] protected float attackRate;
+
+    protected bool isDead;
     protected bool following;
+    protected float timePass;
+    protected bool attacking;
+    
     protected Transform player;
     protected Rigidbody2D rb;
     protected Animator animator;
@@ -20,6 +28,11 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+        timePass += Time.deltaTime;
         //Moviment
         if (following)
         {
@@ -41,7 +54,21 @@ public class EnemyController : MonoBehaviour
                 //ataca
                 rb.linearVelocityX = 0;
                 animator.SetBool("Run", false);
+                //Attack();
+                attacking = true;
+            }
+            else
+            {
+                attacking = false;
+            }
+        }
+
+        if (attacking)
+        {
+            if (timePass >= attackRate)
+            {
                 Attack();
+                timePass = 0;
             }
         }
     }
@@ -51,13 +78,39 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    public void TakeDamage(float _damage)
+    {
+        life -= _damage;
+        if (life <= 0 && isDead == false)
+        {
+            animator.SetTrigger("Death");
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            GetComponent<Collider2D>().enabled = false;
+            isDead = true;
+            //Destroy(gameObject, 1);
+        }
+        else
+        {
+            animator.SetTrigger("Hit");
+        }
+    }
+
+    public void SetPlayer(Transform _player)
+    {
+        player = _player;
+        following = true;
+    }
+
+    public void StopFollowing()
+    {
+        following = false;
+    }
+
+    protected void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == "Player")
         {
-            player = col.transform;
-            following = true;
+            col.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
         }
     }
-    
 }

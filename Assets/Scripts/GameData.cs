@@ -4,24 +4,17 @@ using UnityEngine;
 [Serializable]
 public class GameData
 {
-    [SerializeField]
-    private float life;
-    [SerializeField]
-    private float maxLife;
+    [SerializeField] private float life;
+    [SerializeField] private float maxLife;
 
-    [SerializeField]
-    private float mana;
-    [SerializeField]
-    private float maxMana;
+    [SerializeField] private float mana;
+    [SerializeField] private float maxMana;
 
-    [SerializeField]
-    private int maxJumps;
+    [SerializeField] private int maxJumps;
 
-    [SerializeField]
-    private float damage;
+    [SerializeField] private float damage;
 
-    [SerializeField]
-    private int currency;
+    [SerializeField] private int currency;
     
     //
     public float Life
