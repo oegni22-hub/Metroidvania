@@ -118,7 +118,6 @@ public class PlayerController : MonoBehaviour
         if (col.tag == "Enemy")
         {
             col.gameObject.GetComponent<EnemyController>().TakeDamage(GameManager.instance.gameData.Damage);
-            Debug.Log("Golpeo al enemigo");
         }
     }
 
@@ -130,8 +129,9 @@ public class PlayerController : MonoBehaviour
             //DEATH
             animator.SetTrigger("Death");
             canMove = false;
-            rb.linearVelocityX = 0;
+            rb.bodyType = RigidbodyType2D.Kinematic;
             GetComponent<Collider2D>().enabled = false;
+            rb.linearVelocity  = Vector2.zero;
         }
         else if (GameManager.instance.gameData.Life > 0)
         {

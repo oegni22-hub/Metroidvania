@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
     protected bool following;
     protected float timePass;
     protected bool attacking;
+    protected Vector3 direction;
     
     protected Transform player;
     protected Rigidbody2D rb;
@@ -28,6 +29,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        //mort
         if (isDead)
         {
             return;
@@ -37,7 +39,7 @@ public class EnemyController : MonoBehaviour
         if (following)
         {
             animator.SetBool("Run", true);
-            Vector3 direction = player.position - transform.position;
+            direction = player.position - transform.position;
             if (direction.x < 0) //cap a l'esquerra
             {
                 rb.linearVelocityX = -speed;
@@ -73,11 +75,13 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    //Attack
     protected void Attack()
     {
         animator.SetTrigger("Attack");
     }
 
+    //damage i mort
     public void TakeDamage(float _damage)
     {
         life -= _damage;
@@ -87,6 +91,7 @@ public class EnemyController : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Kinematic;
             GetComponent<Collider2D>().enabled = false;
             isDead = true;
+            rb.linearVelocity = Vector2.zero;
             //Destroy(gameObject, 1);
         }
         else
