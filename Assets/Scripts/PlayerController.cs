@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
+
+    private LevelManager lm;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator =transform.GetChild(0).GetComponent<Animator>();
+        lm = GameObject.Find("LevelManager").GetComponent<LevelManager>();
     }
 
     // Update is called once per frame
@@ -124,6 +127,7 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(float _damage)
     {
         GameManager.instance.gameData.Life -= _damage;
+        lm.UpdateLifeBar();
         if (GameManager.instance.gameData.Life <= 0 && canMove)
         {
             //DEATH

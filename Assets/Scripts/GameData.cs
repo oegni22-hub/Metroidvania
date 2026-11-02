@@ -9,6 +9,7 @@ public class GameData
 
     [SerializeField] private float mana;
     [SerializeField] private float maxMana;
+    [SerializeField] private int potionsCount;
 
     [SerializeField] private int maxJumps;
 
@@ -36,6 +37,12 @@ public class GameData
     {
         get { return maxMana; }
         set { maxMana = value; }
+    }
+
+    public int PotionsCount
+    {
+        get { return potionsCount; }
+        set { potionsCount = value; }
     }
     public int MaxJumps
     {
