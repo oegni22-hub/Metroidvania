@@ -446,9 +446,12 @@ MonoBehaviour:
     maxMana: 40
     potionsCount: 0
     maxJumps: 1
-    damage: 2
+    damage: 5
     currency: 0
+    scene: 1
+    savePosition: {x: 0, y: 0, z: 0}
   doorToGo: 0
+  saveSlot: 
 --- !u!1 &84825038
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,8 +2475,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   player: {fileID: 1750584922}
   offset: {x: 0, y: 2, z: -10}
-  limitX: {x: -117, y: 12}
-  limitY: {x: -14, y: 7}
+  limitX: {x: -117, y: 6}
+  limitY: {x: -14, y: 3}
   parallaxEffect:
   - {fileID: 1815073994}
   - {fileID: 590620351}
@@ -9553,7 +9556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.137329, y: -124.00006}
+  m_AnchoredPosition: {x: 9.137207, y: -124}
   m_SizeDelta: {x: 63.72528, y: 63.72528}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1194336789
@@ -23224,8 +23227,8 @@ Tilemap:
   - first: {x: 11, y: -8, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 4
-      m_TileSpriteIndex: 23
+      m_TileIndex: 1
+      m_TileSpriteIndex: 29
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -25697,7 +25700,7 @@ Tilemap:
     m_RefCount: 4
     m_Data: {fileID: 11400000, guid: 833d46395961c524ab92619ae80b3346, type: 2}
   - serializedVersion: 2
-    m_RefCount: 3
+    m_RefCount: 4
     m_Data: {fileID: 11400000, guid: 3b26aedcb299bc24ba1582205dfbc362, type: 2}
   - serializedVersion: 2
     m_RefCount: 16
@@ -25706,7 +25709,7 @@ Tilemap:
     m_RefCount: 2
     m_Data: {fileID: 11400000, guid: 1c01f4e0f7d87964d8ec801739230791, type: 2}
   - serializedVersion: 2
-    m_RefCount: 45
+    m_RefCount: 44
     m_Data: {fileID: 11400000, guid: fdbff762deaf56041a31bb205a419fd1, type: 2}
   - serializedVersion: 2
     m_RefCount: 5
@@ -25890,7 +25893,7 @@ Tilemap:
     m_RefCount: 6
     m_Data: {fileID: 631892416, guid: f2d45810cbe76ff45b91f1856bfde8aa, type: 3}
   - serializedVersion: 2
-    m_RefCount: 45
+    m_RefCount: 44
     m_Data: {fileID: -2098947605, guid: f2d45810cbe76ff45b91f1856bfde8aa, type: 3}
   - serializedVersion: 2
     m_RefCount: 5
@@ -25908,7 +25911,7 @@ Tilemap:
     m_RefCount: 12
     m_Data: {fileID: 1635020381, guid: f2d45810cbe76ff45b91f1856bfde8aa, type: 3}
   - serializedVersion: 2
-    m_RefCount: 3
+    m_RefCount: 4
     m_Data: {fileID: 1124723938, guid: f2d45810cbe76ff45b91f1856bfde8aa, type: 3}
   - serializedVersion: 2
     m_RefCount: 3
@@ -26131,6 +26134,8 @@ CompositeCollider2D:
       - X: 110000000
         Y: -60312500
       - X: 110000000
+        Y: -79687504
+      - X: 111250000
         Y: -80000000
       - X: 160000000
         Y: -80000000
@@ -26528,7 +26533,8 @@ CompositeCollider2D:
       - {x: 13.999971, y: -6}
       - {x: 11.031241, y: -6.0000076}
       - {x: 11, y: -6.031261}
-      - {x: 11.00003, y: -8}
+      - {x: 11.000021, y: -7.9687552}
+      - {x: 11.125003, y: -8}
       - {x: 16, y: -8.00003}
       - {x: 15.999971, y: -10}
       - {x: -6, y: -9.99997}

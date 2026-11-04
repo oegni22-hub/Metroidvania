@@ -301,8 +301,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EscarabajoController
   speed: 2
   distanceToAttack: 1
-  damage: 3
-  life: 3
+  damage: 12
+  life: 5
   attackRate: 2
 --- !u!1001 &1695958482018335107
 PrefabInstance:

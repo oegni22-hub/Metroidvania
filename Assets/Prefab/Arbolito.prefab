@@ -114,8 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArbolitoController
   speed: 2
   distanceToAttack: 2
-  damage: 2
-  life: 5
+  damage: 10
+  life: 20
   attackRate: 2
   distanceToAttack2: 1
 --- !u!1 &4036663720791516496

@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameData gameData;
     public int doorToGo;
+    public string saveSlot;
 
     private void Awake()
     {
@@ -29,6 +30,19 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    public void SaveData()
+    {
+        //JSON
+        string data = JsonUtility.ToJson(gameData);
+        PlayerPrefs.SetString(saveSlot, data);
+    }
+
+    public void LoadData()
+    {
+        string data = PlayerPrefs.GetString(saveSlot);
+        gameData = JsonUtility.FromJson<GameData>(data);
     }
     
 

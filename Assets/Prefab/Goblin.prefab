@@ -114,8 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GoblinController
   speed: 2
   distanceToAttack: 4
-  damage: 3
-  life: 2
+  damage: 7
+  life: 5
   attackRate: 2
   lanzaPrefab: {fileID: 7746202177879400626, guid: 8b7dbbb357a1d6f4fb22877e16138b81, type: 3}
   lanzaSpawnPoint: {fileID: 2209860243837503266}

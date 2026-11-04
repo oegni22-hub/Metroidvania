@@ -223,8 +223,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DemonioController
   speed: 1
   distanceToAttack: 3
-  damage: 2
-  life: 2
+  damage: 5
+  life: 5
   attackRate: 4
 --- !u!1 &9124886377898280875
 GameObject:

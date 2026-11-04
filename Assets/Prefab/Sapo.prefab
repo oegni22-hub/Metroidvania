@@ -123,8 +123,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SapoController
   speed: 1
   distanceToAttack: 2
-  damage: 3
-  life: 4
+  damage: 8
+  life: 12
   attackRate: 2
 --- !u!1 &7057332880653204697
 GameObject:

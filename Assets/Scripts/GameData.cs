@@ -12,10 +12,24 @@ public class GameData
     [SerializeField] private int potionsCount;
 
     [SerializeField] private int maxJumps;
-
     [SerializeField] private float damage;
-
     [SerializeField] private int currency;
+    
+    [SerializeField] private int scene;
+    [SerializeField] private Vector3 savePosition;
+    //Constructor
+    public GameData()
+    {
+        life = 100f;
+        maxLife = 100f;
+        mana = 40f;
+        maxMana = 40f;
+        maxJumps = 1;
+        damage = 10f;
+        currency = 0;
+        potionsCount = 3;
+        scene = 1;
+    }
     
     //
     public float Life
@@ -58,5 +72,15 @@ public class GameData
     {
         get { return currency; }
         set { currency = value; }
+    }
+    public int Scene
+    {
+        get { return scene; }
+        set { scene = value; }
+    }
+    public Vector3 SavePosition
+    {
+        get { return savePosition; }
+        set { savePosition = value; }
     }
 }
