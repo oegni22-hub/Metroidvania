@@ -56,6 +56,7 @@ public class MainMenuManager : MonoBehaviour
         if (PlayerPrefs.HasKey("GameData" + index.ToString()))
         {
             GameManager.instance.LoadData();
+            GameManager.instance.isFromLoad = true;
         }
         else
         {

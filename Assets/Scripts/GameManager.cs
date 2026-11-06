@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public GameData gameData;
     public int doorToGo;
     public string saveSlot;
+    public bool isFromLoad;
 
     private void Awake()
     {
