@@ -2,13 +2,27 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
-    private bool key = false;
-    [SerializeField] private bool door;
+    //[SerializeField] private int id;
+    private Animator anim;
+    [SerializeField] private Animator loQueAbra;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        anim = GetComponent<Animator>();
         
+        /*for (int i = 0; i< GameManager.instance.scenarioData.DoorOpen[id] == true)
+         {
+            if (GameManager.instance.scenarioData.DoorOpen == true)
+            {
+                OpenDoor();
+            }
+         }*/
+        
+        if (GameManager.instance.scenarioData.DoorOpen == true)
+        {
+            OpenDoor();
+        }
     }
 
     // Update is called once per frame
@@ -19,25 +33,16 @@ public class Door : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "Player" && key == true && door == true)
+        if (col.tag == "Player")
         {
-            animator.SetBool("Open", true);
+            OpenDoor();
         }
     }
 
-    private void OnTriggerStay2D(Collider2D col)
+    void OpenDoor()
     {
-        if (col.tag == "Player" && door == false && Input.GetAxis("Vertical") > 0.5f)
-        {
-            key = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D col)
-    {
-        if (col.tag == "Player" && door == true)
-        {
-            animator.SetBool("Open", false);
-        }
+        loQueAbra.SetBool("Open", true);
+        anim.SetTrigger("Open");
+        GameManager.instance.scenarioData.DoorOpen = true;
     }
 }

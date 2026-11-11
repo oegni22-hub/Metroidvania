@@ -6145,6 +6145,9 @@ MonoBehaviour:
     currency: 0
     scene: 1
     savePosition: {x: 0, y: 0, z: 0}
+  scenarioData:
+    doorOpen: 0
+    boss1Defeated: 0
   doorToGo: 0
   saveSlot: 
   isFromLoad: 0
@@ -7356,6 +7359,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
+      propertyPath: fire
+      value: 
+      objectReference: {fileID: 2426384379767716644, guid: a2419eb097aafd94ea310a87ef26b5ee, type: 3}
+    - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
+      propertyPath: fireExpence
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
+      propertyPath: fireVelocity
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 259171691812671776, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.82

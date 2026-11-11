@@ -1,9 +1,13 @@
+using Mono.Cecil;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
+    [SerializeField] private GameObject fire;
+    [SerializeField] private float fireVelocity;
+    [SerializeField] private float fireExpence;
     
     private int jumpCount;
     private int comboCount;
@@ -98,6 +102,24 @@ public class PlayerController : MonoBehaviour
             animator.SetInteger("Combo", comboCount);
         }
         
+        //Hard Attack
+        if (Input.GetButtonDown("HardAttack") && isGrounded)
+        {
+            animator.SetTrigger("HardAttack");
+            canMove = false;
+            rb.linearVelocityX = 0;
+        }
+        
+        //Magic Attack
+        if (Input.GetButtonDown("Magic") && isGrounded && GameManager.instance.gameData.Mana >= fireExpence)
+        {
+            animator.SetTrigger("Magic");
+            Instantiate(fire, new Vector3(transform.position.x, transform.position.y + 0.7f, transform.position.z), transform.rotation);
+            GameManager.instance.gameData.Mana -= fireExpence;
+            lm.UpdateManaBar();
+            canMove = false;
+            rb.linearVelocityX = 0;
+        }
     }
 
     public void FinishAttack1()
@@ -113,7 +135,14 @@ public class PlayerController : MonoBehaviour
     {
         comboCount = 0;
         animator.SetInteger("Combo", comboCount);
+        canMove = true;
     }
+    
+    public void FinishHardAttack()
+    {
+        canMove = true;
+    }
+    
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -142,7 +171,9 @@ public class PlayerController : MonoBehaviour
             //HIT
             animator.SetTrigger("Hit");
             comboCount = 0;
+            canMove = true;
             animator.SetInteger("Combo", comboCount);
         }
     }
+    
 }

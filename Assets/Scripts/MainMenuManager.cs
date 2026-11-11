@@ -61,7 +61,9 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             GameData inicio = new GameData();
+            ScenarioData scene = new ScenarioData();
             GameManager.instance.gameData = inicio;
+            GameManager.instance.scenarioData = scene;
         }
         SceneManager.LoadScene(GameManager.instance.gameData.Scene);
     }

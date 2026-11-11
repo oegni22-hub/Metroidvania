@@ -9,11 +9,12 @@ public class SaveStoneController : MonoBehaviour
     [SerializeField] private ParticleSystem particles;
     [SerializeField] private SpriteRenderer brilloPiedra;
     [SerializeField] private float animSpeed;
-    //private LevelManager lm;
+    private LevelManager lm;
 
     private void Start()
     {
         StartCoroutine(BrilloPiedra());
+        lm = GameObject.Find("LevelManager").GetComponent<LevelManager>();
     }
     
     private void Update()
@@ -26,11 +27,11 @@ public class SaveStoneController : MonoBehaviour
                 GameManager.instance.gameData.Scene = SceneManager.GetActiveScene().buildIndex;
                 GameManager.instance.gameData.SavePosition = transform.position;
                 //curar
-                /*GameManager.instance.gameData.Life = GameManager.instance.gameData.MaxLife;
-                lm.UpdateLifeBar();*/
+                GameManager.instance.gameData.Life = GameManager.instance.gameData.MaxLife;
+                lm.UpdateLifeBar();
                 //recargar mana
-                /*GameManager.instance.gameData.Mana = GameManager.instance.gameData.MaxMana;
-                lm.UpdateManaBar();*/
+                GameManager.instance.gameData.Mana = GameManager.instance.gameData.MaxMana;
+                lm.UpdateManaBar();
                 
                 GameManager.instance.SaveData();
                 particles.Play();

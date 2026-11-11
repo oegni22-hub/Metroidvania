@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2257381407966185737}
   - component: {fileID: 8440368822015960300}
   - component: {fileID: 70474396527840256}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Prota
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -113,6 +113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 5
   jumpForce: 7
+  fire: {fileID: 0}
+  fireVelocity: 8
+  fireExpence: 5
 --- !u!1 &8030090967618196601
 GameObject:
   m_ObjectHideFlags: 0
