@@ -16,4 +16,9 @@ public class ControlAnimatorEnemies : MonoBehaviour
     {
         transform.GetChild(0).gameObject.SetActive(false);
     }
+
+    public void BossSpikesAttack()
+    {
+        transform.parent.GetComponent<BossController>().ThrowSpikes();
+    }
 }
