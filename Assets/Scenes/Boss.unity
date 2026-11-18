@@ -788,6 +788,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71a9ab19623850e43b3e14504c7f863e, type: 3}
+--- !u!1 &731251446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 731251447}
+  m_Layer: 0
+  m_Name: RocasSpawnMax
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &731251447
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731251446}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 29.52, y: 7.55, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &754594903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754594904}
+  m_Layer: 0
+  m_Name: RocasSpawnMin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &754594904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754594903}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13.54, y: 7.47, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &828163324
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,7 +936,7 @@ Transform:
   m_GameObject: {fileID: 845526731}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6, y: 0, z: 0}
+  m_LocalPosition: {x: 1.78, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1324,11 +1386,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 931766758}
-  - component: {fileID: 931766759}
   - component: {fileID: 931766760}
-  m_Layer: 0
+  - component: {fileID: 931766761}
+  - component: {fileID: 931766759}
+  m_Layer: 7
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1378,6 +1441,13 @@ MonoBehaviour:
   - {fileID: 1485558264}
   - {fileID: 1170845550}
   spikesPrefab: {fileID: 3004159828168570880, guid: a4a310594db768841bbd469cb434226f, type: 3}
+  rocaSpawnMin: {fileID: 754594904}
+  rocaSpawnMax: {fileID: 731251447}
+  rocasPrefab:
+  - {fileID: 8008910943534412913, guid: efe168c76e56ac74fa947e2133598ba2, type: 3}
+  - {fileID: 2799374219883773792, guid: b1402038bae298249bb74c7b65fc9557, type: 3}
+  rocasSpawnRate: 0.2
+  jumpForce: 10
 --- !u!50 &931766760
 Rigidbody2D:
   serializedVersion: 5
@@ -1404,7 +1474,44 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!70 &931766761
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931766757}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.02, y: 1.29}
+  m_Size: {x: 3.880001, y: 2.5624828}
+  m_Direction: 1
 --- !u!1001 &979509309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6470,9 +6577,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 74822294678092665, guid: 912f096b666b75f4ea4ca3210c610072, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 992854110}
-    - targetCorrespondingSourceObject: {fileID: 74822294678092665, guid: 912f096b666b75f4ea4ca3210c610072, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 992854111}
   m_SourcePrefab: {fileID: 100100000, guid: 912f096b666b75f4ea4ca3210c610072, type: 3}
 --- !u!4 &992854105 stripped
@@ -6480,43 +6584,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 74822294678092666, guid: 912f096b666b75f4ea4ca3210c610072, type: 3}
   m_PrefabInstance: {fileID: 992854104}
   m_PrefabAsset: {fileID: 0}
---- !u!70 &992854110
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 142791223}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: -0.20000009, y: -0.21623993}
-  m_Size: {x: 3.880001, y: 2.5624828}
-  m_Direction: 1
 --- !u!114 &992854111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6617,11 +6684,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 259171691812671776, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.06
       objectReference: {fileID: 0}
     - target: {fileID: 259171691812671776, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 259171691812671776, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7164,6 +7231,10 @@ MonoBehaviour:
   limitX: {x: 5, y: 60}
   limitY: {x: -13, y: 3}
   parallaxEffect: []
+  duration: 3
+  fuerza: 20
+  frecuency: 0.05
+  smoothness: 1
 --- !u!114 &1470255991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7946,8 +8017,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: m7Spike
       objectReference: {fileID: 0}
+    - target: {fileID: 3004159828168570880, guid: a4a310594db768841bbd469cb434226f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3533979709983245157, guid: a4a310594db768841bbd469cb434226f, type: 3}
+    - {fileID: 2246135695097298955, guid: a4a310594db768841bbd469cb434226f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -7975,3 +8051,5 @@ SceneRoots:
   - {fileID: 931766758}
   - {fileID: 652206879}
   - {fileID: 876833112}
+  - {fileID: 754594904}
+  - {fileID: 731251447}

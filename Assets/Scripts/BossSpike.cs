@@ -15,6 +15,11 @@ public class BossSpike : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Quaternion rot = Quaternion.FromToRotation(transform.right * -1, rb.linearVelocity.normalized);
+        
+        //transform.eulerAngles = rot.eulerAngles;
+        
+        transform.rotation = transform.rotation * rot;
         
     }
 
@@ -25,5 +30,6 @@ public class BossSpike : MonoBehaviour
             col.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
             Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
 }
