@@ -82,7 +82,7 @@ public class EnemyController : MonoBehaviour
     }
 
     //damage i mort
-    public void TakeDamage(float _damage)
+    public virtual void TakeDamage(float _damage)
     {
         life -= _damage;
         if (life <= 0 && isDead == false)

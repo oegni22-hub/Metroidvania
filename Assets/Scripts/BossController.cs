@@ -1,43 +1,57 @@
 using System.Collections;
+using System.Reflection.Metadata;
 using UnityEngine;
 
 public class BossController : EnemyController
 {
-    enum BossStates {Waiting, Roar, Roll, SpikeAttack, Jump, Moving, Death}
+    enum BossStates { Waiting, Roar, Roll, SpikeAttack, Jump, Moving, Death }
 
     [SerializeField] private BossStates bossState;
-    [SerializeField] private float rollSpeed;
-    
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem runingParticles;
+    [SerializeField] private ParticleSystem collisionParticles;
+
+    [Header("Rolling Attack")] [SerializeField]
+    private float rollSpeed;
+
     private bool rolling = false;
+    [Header("Movement")] 
     [SerializeField] private Transform pointToMove;
+
+    [Header("Spikes Attack")] [SerializeField]
+    private GameObject spikesPrefab;
+
     [SerializeField] private Transform[] spikesSpawnPoints;
-    [SerializeField] private GameObject spikesPrefab;
+    [Header("Roar")] [SerializeField] private GameObject[] rocasPrefab;
     [SerializeField] private Transform rocaSpawnMin, rocaSpawnMax;
-    [SerializeField] private GameObject[] rocasPrefab;
     [SerializeField] private float rocasSpawnRate;
-    [SerializeField] private float jumpForce;
-    
+    [Header("Jump")] [SerializeField] private float jumpHeight;
+    [SerializeField] private float jumpSpeed;
+    [SerializeField] private float minX, maxX;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         base.Start();
-        
+
         player = GameObject.Find("Prota").transform;
-        
-        // TEST //////////////////////////
-        ChangeState(BossStates.Jump);
+
+        ChangeState(BossStates.Roar);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        /*if (isDead)
+        {
+            ChangeState(BossStates.Death);
+        }*/
     }
-    
+
     void ChangeState(BossStates newState)
     {
         LookTo(player);
-        
+
         bossState = newState;
         switch (bossState)
         {
@@ -46,12 +60,12 @@ public class BossController : EnemyController
                 break;
             case BossStates.Roar:
                 StartCoroutine(Roar());
-                break;  
+                break;
             case BossStates.Roll:
                 StartCoroutine(Roll());
                 break;
             case BossStates.Death:
-                
+                Death();
                 break;
             case BossStates.Moving:
                 StartCoroutine(Movement());
@@ -71,7 +85,7 @@ public class BossController : EnemyController
     {
         yield return new WaitForSeconds(1);
         int azar = Random.Range(1, 6);
-        ChangeState((BossStates) azar);
+        ChangeState((BossStates)azar);
     }
 
     IEnumerator Roar()
@@ -92,7 +106,8 @@ public class BossController : EnemyController
         while (timePass < 3)
         {
             int rocaAzar = Random.Range(0, rocasPrefab.Length);
-            Vector2 randomPos = new Vector2(Random.Range(rocaSpawnMin.position.x, rocaSpawnMax.position.x), rocaSpawnMin.position.y);
+            Vector2 randomPos = new Vector2(Random.Range(rocaSpawnMin.position.x, rocaSpawnMax.position.x),
+                rocaSpawnMin.position.y);
             Quaternion randomRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
             GameObject rocaClon = Instantiate(rocasPrefab[rocaAzar], randomPos, randomRot);
             rocaClon.GetComponent<ConstantForce2D>().torque = Random.Range(225, 275);
@@ -106,17 +121,22 @@ public class BossController : EnemyController
         animator.SetBool("Roll", true);
         yield return new WaitForSeconds(1.292f);
         rolling = true;
+        runingParticles.Play();
         
         while (rolling)
         {
             rb.linearVelocity = transform.right * rollSpeed;
             yield return null;
         }
+
         animator.SetBool("Roll", false);
         rb.linearVelocity = Vector2.zero;
-        
-        yield return new WaitForSeconds(1);
-        
+        runingParticles.Pause();
+        collisionParticles.Play();
+        yield return new WaitForSeconds(0.5f);
+        collisionParticles.Stop();
+        yield return new WaitForSeconds(0.5f);
+
         ChangeState(BossStates.Waiting);
     }
 
@@ -124,8 +144,9 @@ public class BossController : EnemyController
     {
         LookTo(pointToMove);
         animator.SetBool("Walk", true);
-        
+
         bool walking = true;
+        runingParticles.Play();
 
         while (walking)
         {
@@ -138,21 +159,36 @@ public class BossController : EnemyController
                 animator.SetBool("Walk", false);
                 walking = false;
             }
+
             yield return null;
         }
-        
+        runingParticles.Pause();
+
         ChangeState(BossStates.Waiting);
     }
 
     IEnumerator Jump()
     {
+        Vector3 initialPos = transform.position;
+        float finishPosX = Mathf.Clamp(player.position.x, minX, maxX);
+        float t = 0;
         animator.SetBool("Jump", true);
-        yield return new WaitForSeconds(0.75f);
-        rb.linearVelocity = new Vector2(speed, jumpForce);
-        //Cuando acabe el salto
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.7f);
+
+        //Parabola
+        while (t < 1)
+        {
+            t += Time.deltaTime * jumpSpeed;
+            float x = Mathf.Lerp(initialPos.x, finishPosX, t);
+            float tY = 4f * t * (1f - t);
+            float y = Mathf.Lerp(initialPos.y, jumpHeight, tY);
+            transform.position = new Vector3(x, y, transform.position.z);
+            yield return null;
+        }
+
         animator.SetBool("Jump", false);
-        yield return new WaitForSeconds(0.33f);
+        //          Poner particulas aterrizar
+        yield return new WaitForSeconds(0.58f);
         ChangeState(BossStates.Waiting);
     }
 
@@ -165,7 +201,24 @@ public class BossController : EnemyController
         ChangeState(BossStates.Waiting);
     }
 
-    void LookTo(Transform toLook)
+    void Death()
+    {
+        StopAllCoroutines();
+        //Soltar loot y abrir puerta
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        if (isDead == true)
+        {
+            ChangeState(BossStates.Death);
+            runingParticles.Pause();
+            //         Parar particulas
+        }
+    }
+
+void LookTo(Transform toLook)
     {
         if (toLook.position.x > transform.position.x)
         {
@@ -190,5 +243,9 @@ public class BossController : EnemyController
     private void OnCollisionEnter2D(Collision2D col)
     {
         rolling = false;
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+        }
     }
 }

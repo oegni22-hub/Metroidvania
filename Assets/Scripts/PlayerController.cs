@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
+    
+    [Header("Progectile")]
     [SerializeField] private GameObject fire;
     [SerializeField] private float fireVelocity;
     [SerializeField] private float fireExpence;
