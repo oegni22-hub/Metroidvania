@@ -17,5 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dungeon.unity
     guid: cf24bef1c9f30cc4cb1620b34d2127e4
+  - enabled: 1
+    path: Assets/Scenes/SavePoint2.unity
+    guid: 3dc40d0c04da1164cb721ebc95a32e7b
+  - enabled: 1
+    path: Assets/Scenes/Boss.unity
+    guid: 55d5a7cb0544683439c2345314601b1f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

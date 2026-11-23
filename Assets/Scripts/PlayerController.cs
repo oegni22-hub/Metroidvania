@@ -1,3 +1,4 @@
+using System.Collections;
 using Mono.Cecil;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float inmunityTime;
+    [SerializeField] private AnimationCurve inmunityAnim;
     
     [Header("Progectile")]
     [SerializeField] private GameObject fire;
@@ -144,7 +147,39 @@ public class PlayerController : MonoBehaviour
     {
         canMove = true;
     }
-    
+
+    public void KnockBack(Vector2 direction, float knockBackForce)
+    {
+        StartCoroutine(KnockBackRoutine(direction, knockBackForce));
+    }
+
+    IEnumerator KnockBackRoutine(Vector2 direction, float knockBackForce)
+    {
+        canMove = false;
+        rb.AddForce(direction * knockBackForce);
+        yield return new WaitForSeconds(0.5f);
+        canMove = true;
+    }
+
+    IEnumerator TemporalInmunity()
+    {
+        SpriteRenderer spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        gameObject.layer = 10;
+        //yield return new WaitForSeconds(inmunityTime);
+        float t = 0;
+        Color tempC = spriteRenderer.color;
+        while (t < inmunityTime)
+        {
+            t += Time.deltaTime;
+            float value = inmunityAnim.Evaluate(t);
+            tempC.a = value;
+            spriteRenderer.color = tempC;
+            yield return null;
+        }
+        gameObject.layer = 9;
+        tempC.a = 1;
+        spriteRenderer.color = tempC;
+    }
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -175,6 +210,7 @@ public class PlayerController : MonoBehaviour
             comboCount = 0;
             canMove = true;
             animator.SetInteger("Combo", comboCount);
+            StartCoroutine(TemporalInmunity());
         }
     }
     

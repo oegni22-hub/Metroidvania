@@ -2580,6 +2580,10 @@ MonoBehaviour:
   - {fileID: 681709701}
   - {fileID: 546212014}
   - {fileID: 1264953311}
+  duration: 0
+  fuerza: 0
+  frecuency: 0
+  smoothness: 0
 --- !u!1 &333943115
 GameObject:
   m_ObjectHideFlags: 0
@@ -32260,7 +32264,7 @@ PrefabInstance:
     - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: fire
       value: 
-      objectReference: {fileID: 2426384379767716644, guid: a2419eb097aafd94ea310a87ef26b5ee, type: 3}
+      objectReference: {fileID: 4944748631229401336, guid: 05a9a90b7db5233469a13cf5553fc15f, type: 3}
     - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: fireExpence
       value: 5

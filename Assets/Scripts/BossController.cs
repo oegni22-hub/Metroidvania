@@ -7,10 +7,11 @@ public class BossController : EnemyController
     enum BossStates { Waiting, Roar, Roll, SpikeAttack, Jump, Moving, Death }
 
     [SerializeField] private BossStates bossState;
+    [SerializeField] private GameObject hitSprite;
+    private CapsuleCollider2D collider;
+    [SerializeField] private GameObject[] bossDoors;
     [Header("Particles")]
     [SerializeField] private ParticleSystem runingParticles;
-    [SerializeField] private ParticleSystem collisionParticles;
-
     [Header("Rolling Attack")] [SerializeField]
     private float rollSpeed;
 
@@ -28,6 +29,7 @@ public class BossController : EnemyController
     [Header("Jump")] [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float minX, maxX;
+    [SerializeField] private float knockBackForce;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,6 +37,8 @@ public class BossController : EnemyController
         base.Start();
 
         player = GameObject.Find("Prota").transform;
+        collider = GetComponent<CapsuleCollider2D>();
+        OpenDoors();
 
         ChangeState(BossStates.Roar);
     }
@@ -42,10 +46,7 @@ public class BossController : EnemyController
     // Update is called once per frame
     void Update()
     {
-        /*if (isDead)
-        {
-            ChangeState(BossStates.Death);
-        }*/
+        
     }
 
     void ChangeState(BossStates newState)
@@ -92,7 +93,6 @@ public class BossController : EnemyController
     {
         animator.SetBool("Roar", true);
         yield return new WaitForSeconds(0.5f);
-        //tiembla la camara
         Camera.main.GetComponent<CameraController>().StartShake(3);
         yield return StartCoroutine(FallingRocks());
         animator.SetBool("Roar", false);
@@ -121,20 +121,21 @@ public class BossController : EnemyController
         animator.SetBool("Roll", true);
         yield return new WaitForSeconds(1.292f);
         rolling = true;
+        runingParticles.gameObject.SetActive(true);
         runingParticles.Play();
-        
+        collider.size = new Vector2(2.5f, 2.5f);
         while (rolling)
         {
             rb.linearVelocity = transform.right * rollSpeed;
             yield return null;
         }
-
+        Camera.main.GetComponent<CameraController>().StartShake(0.5f);
+        collider.size = new Vector2(3.8f, 2.5f);
         animator.SetBool("Roll", false);
         rb.linearVelocity = Vector2.zero;
         runingParticles.Pause();
-        collisionParticles.Play();
+        runingParticles.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        collisionParticles.Stop();
         yield return new WaitForSeconds(0.5f);
 
         ChangeState(BossStates.Waiting);
@@ -147,6 +148,7 @@ public class BossController : EnemyController
 
         bool walking = true;
         runingParticles.Play();
+        runingParticles.gameObject.SetActive(true);
 
         while (walking)
         {
@@ -163,6 +165,7 @@ public class BossController : EnemyController
             yield return null;
         }
         runingParticles.Pause();
+        runingParticles.gameObject.SetActive(false);
 
         ChangeState(BossStates.Waiting);
     }
@@ -185,7 +188,7 @@ public class BossController : EnemyController
             transform.position = new Vector3(x, y, transform.position.z);
             yield return null;
         }
-
+        Camera.main.GetComponent<CameraController>().StartShake(0.5f);
         animator.SetBool("Jump", false);
         //          Poner particulas aterrizar
         yield return new WaitForSeconds(0.58f);
@@ -195,9 +198,12 @@ public class BossController : EnemyController
     IEnumerator SpikeAttack()
     {
         animator.SetBool("Spikes", true);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(0.5f);
+        collider.size = new Vector2(2.5f, 2.5f);
+        yield return new WaitForSeconds(2.5f);
         animator.SetBool("Spikes", false);
         yield return new WaitForSeconds(0.83f);
+        collider.size = new Vector2(3.8f, 2.5f);
         ChangeState(BossStates.Waiting);
     }
 
@@ -213,12 +219,42 @@ public class BossController : EnemyController
         if (isDead == true)
         {
             ChangeState(BossStates.Death);
+            rb.linearVelocity = Vector2.zero;
+            hitSprite.SetActive(false);
             runingParticles.Pause();
-            //         Parar particulas
+            runingParticles.gameObject.SetActive(false);
+            OpenDoors();
+        }
+        else
+        {
+            StartCoroutine(Hit());
         }
     }
 
-void LookTo(Transform toLook)
+    void OpenDoors()
+    {
+        for (int i = 0; i < bossDoors.Length; i++)
+        {
+            bossDoors[i].GetComponent<Animator>().SetBool("Open", true);
+        }
+    }
+
+    void CloseDoors()
+    {
+        for (int i = 0 ; i < bossDoors.Length; i++)
+        {
+            bossDoors[i].GetComponent<Animator>().SetBool("Open", false);
+        }
+    }
+
+    IEnumerator Hit()
+    {
+        hitSprite.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        hitSprite.SetActive(false);
+    }
+
+    void LookTo(Transform toLook)
     {
         if (toLook.position.x > transform.position.x)
         {
@@ -242,10 +278,31 @@ void LookTo(Transform toLook)
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        rolling = false;
+        if (col.gameObject.tag == "BossDoor")
+        {
+            rolling = false;
+        }
+        
         if (col.gameObject.tag == "Player")
         {
+            rolling = false;
             col.gameObject.GetComponent<PlayerController>().TakeDamage(damage);
+            
+            if (bossState == BossStates.Jump)
+            {
+                Vector3 direccion = col.transform.position - transform.position;
+                Vector2 direccionKnockBack = Vector2.zero;
+                if (direccion.x > 0)
+                {
+                    direccionKnockBack = Vector2.left;
+                }
+                else if (direccion.x <= 0)
+                {
+                    direccionKnockBack = Vector2.right;
+                }
+                col.gameObject.GetComponent<PlayerController>().KnockBack(direccionKnockBack, knockBackForce);
+
+            }
         }
     }
 }

@@ -1130,7 +1130,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1264,9 +1264,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.4198113, g: 0.95168227, b: 1, a: 0.6039216}
+      minMaxState: 2
+      minColor: {r: 0.41037738, g: 0.706113, b: 1, a: 1}
+      maxColor: {r: 0.41960788, g: 1, b: 0.92578304, a: 0.6313726}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1330,7 +1330,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 3
       minMaxState: 0
-      scalar: 0.73
+      scalar: 0.11
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -6883,6 +6883,10 @@ MonoBehaviour:
   - {fileID: 356625788}
   - {fileID: 804935887}
   - {fileID: 148345054}
+  duration: 0
+  fuerza: 0
+  frecuency: 0
+  smoothness: 0
 --- !u!114 &1503726483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7362,7 +7366,7 @@ PrefabInstance:
     - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: fire
       value: 
-      objectReference: {fileID: 2426384379767716644, guid: a2419eb097aafd94ea310a87ef26b5ee, type: 3}
+      objectReference: {fileID: 4944748631229401336, guid: 05a9a90b7db5233469a13cf5553fc15f, type: 3}
     - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: fireExpence
       value: 5

@@ -6,6 +6,7 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float damage;
     [SerializeField] private float duration;
+    [SerializeField] private ParticleSystem explosionParticles;
     private Animator animator;
     [SerializeField] private float explosionDuration;
     
@@ -26,7 +27,7 @@ public class PlayerProjectile : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log(col.gameObject.name);
+        explosionParticles.Play();
         if (col.gameObject.tag == "Enemy")
         {
             //auch
