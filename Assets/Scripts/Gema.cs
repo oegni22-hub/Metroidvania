@@ -13,13 +13,19 @@ public class Gema : MonoBehaviour
         switch (id)
         {
             case "DobleJump":
-                if (GameManager.instance.gameData.MaxJumps >1) { Destroy(gameObject); }
+                if (GameManager.instance.gameData.MaxJumps > 1) { Destroy(gameObject); }
                 break;
             case "Dash":
 
                 break;
             case "MagicAtack":
                 
+                break;
+            case "AugMaxLife":
+                if (GameManager.instance.gameData.MaxLife > 50) { Destroy(gameObject); }
+                break;
+            case "AugMaxMana":
+                if (GameManager.instance.gameData.MaxMana > 30) { Destroy(gameObject); }
                 break;
             default:
                 
@@ -49,6 +55,16 @@ public class Gema : MonoBehaviour
                     break;
                 case "Magic Atack":
                     Debug.Log("Magic Atack");
+                    break;
+                case "AugMaxLife":
+                    GameManager.instance.gameData.MaxLife = 100;
+                    particles.Play();
+                    Time.timeScale = 0;
+                    break;
+                case "AugMaxMana":
+                    GameManager.instance.gameData.MaxMana = 50;
+                    particles.Play();
+                    Time.timeScale = 0;
                     break;
                 default:
                     

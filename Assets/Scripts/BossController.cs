@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Reflection.Metadata;
+using System;
 using UnityEngine;
 
 public class BossController : EnemyController
@@ -9,7 +9,10 @@ public class BossController : EnemyController
     [SerializeField] private BossStates bossState;
     [SerializeField] private GameObject hitSprite;
     private CapsuleCollider2D collider;
-    [SerializeField] private GameObject[] bossDoors;
+    [SerializeField] private GameObject gema;
+    
+    public static Action OnBossDefeated;
+    
     [Header("Particles")]
     [SerializeField] private ParticleSystem runingParticles;
     [Header("Rolling Attack")] [SerializeField]
@@ -34,12 +37,21 @@ public class BossController : EnemyController
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (GameManager.instance.scenarioData.Boss1Defeated == true)
+        {
+            Destroy(gameObject);
+        }
+        
         base.Start();
 
         player = GameObject.Find("Prota").transform;
         collider = GetComponent<CapsuleCollider2D>();
-        OpenDoors();
 
+        StartBoss.OnCombatStart += StartCombat;
+    }
+
+    void StartCombat()
+    {
         ChangeState(BossStates.Roar);
     }
 
@@ -85,7 +97,7 @@ public class BossController : EnemyController
     IEnumerator Waiting()
     {
         yield return new WaitForSeconds(1);
-        int azar = Random.Range(1, 6);
+        int azar = UnityEngine.Random.Range(1, 6);
         ChangeState((BossStates)azar);
     }
 
@@ -105,12 +117,12 @@ public class BossController : EnemyController
         float timePass = 0;
         while (timePass < 3)
         {
-            int rocaAzar = Random.Range(0, rocasPrefab.Length);
-            Vector2 randomPos = new Vector2(Random.Range(rocaSpawnMin.position.x, rocaSpawnMax.position.x),
+            int rocaAzar = UnityEngine.Random.Range(0, rocasPrefab.Length);
+            Vector2 randomPos = new Vector2(UnityEngine.Random.Range(rocaSpawnMin.position.x, rocaSpawnMax.position.x),
                 rocaSpawnMin.position.y);
-            Quaternion randomRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
+            Quaternion randomRot = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360));
             GameObject rocaClon = Instantiate(rocasPrefab[rocaAzar], randomPos, randomRot);
-            rocaClon.GetComponent<ConstantForce2D>().torque = Random.Range(225, 275);
+            rocaClon.GetComponent<ConstantForce2D>().torque = UnityEngine.Random.Range(225, 275);
             timePass += rocasSpawnRate;
             yield return new WaitForSeconds(rocasSpawnRate);
         }
@@ -210,7 +222,16 @@ public class BossController : EnemyController
     void Death()
     {
         StopAllCoroutines();
-        //Soltar loot y abrir puerta
+        OnBossDefeated();
+        GameManager.instance.scenarioData.Boss1Defeated = true;
+        //Soltar loot
+        StartCoroutine(SoltarLoot());
+    }
+
+    IEnumerator SoltarLoot()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Instantiate(gema, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.rotation);
     }
 
     public override void TakeDamage(float damage)
@@ -223,27 +244,10 @@ public class BossController : EnemyController
             hitSprite.SetActive(false);
             runingParticles.Pause();
             runingParticles.gameObject.SetActive(false);
-            OpenDoors();
         }
         else
         {
             StartCoroutine(Hit());
-        }
-    }
-
-    void OpenDoors()
-    {
-        for (int i = 0; i < bossDoors.Length; i++)
-        {
-            bossDoors[i].GetComponent<Animator>().SetBool("Open", true);
-        }
-    }
-
-    void CloseDoors()
-    {
-        for (int i = 0 ; i < bossDoors.Length; i++)
-        {
-            bossDoors[i].GetComponent<Animator>().SetBool("Open", false);
         }
     }
 
@@ -304,5 +308,10 @@ public class BossController : EnemyController
 
             }
         }
+    }
+
+    void OnDisable()
+    {
+        StartBoss.OnCombatStart -= StartCombat;
     }
 }

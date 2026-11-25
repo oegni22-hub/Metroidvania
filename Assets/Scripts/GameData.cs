@@ -20,10 +20,10 @@ public class GameData
     //Constructor
     public GameData()
     {
-        life = 100f;
-        maxLife = 100f;
-        mana = 40f;
-        maxMana = 40f;
+        life = 50f;
+        maxLife = 50f;
+        mana = 30f;
+        maxMana = 30f;
         maxJumps = 1;
         damage = 10f;
         currency = 0;

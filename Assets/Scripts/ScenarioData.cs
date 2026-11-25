@@ -7,7 +7,6 @@ public class ScenarioData
    [SerializeField] private bool doorOpen;
    [SerializeField] private bool boss1Defeated;
 
-
    public bool DoorOpen
    {
       get { return doorOpen; }
