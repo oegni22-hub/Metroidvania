@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
@@ -64,5 +66,42 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1;
         gemsPanel.SetActive(false);
+    }
+
+    public void LastGemContinueButton()
+    {
+        gemsPanel.SetActive(false);
+        winPanel.SetActive(true);
+    }
+
+    public void RestartButton()
+    {
+        Time.timeScale = 1;
+        //curar
+        GameManager.instance.gameData.Life = GameManager.instance.gameData.MaxLife;
+        UpdateLifeBar();
+        //recargar mana
+        GameManager.instance.gameData.Mana = GameManager.instance.gameData.MaxMana;
+        UpdateManaBar();
+        //Cambio a ultima escena guardada
+        SceneManager.LoadScene(GameManager.instance.gameData.Scene);
+    }
+
+    public void MainMenuButton()
+    {
+        GameManager.instance.gameData.Scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(0);
+    }
+    
+    public void GameOver()
+    {
+        StartCoroutine(ActivatePanelGameOver());
+    }
+
+    IEnumerator ActivatePanelGameOver()
+    {
+        yield return new WaitForSeconds(1);
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 }

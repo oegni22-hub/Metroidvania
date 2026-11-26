@@ -20,7 +20,7 @@ public class StartBoss : MonoBehaviour
         if (col.tag == "Player")
         {
             // ?.Invoke para assegurar-se de que no tiene error
-            OnCombatStart?.Invoke();
+            OnCombatStart.Invoke();
             //Cierra puertas
             //Activa el boss
             Destroy(gameObject);

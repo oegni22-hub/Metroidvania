@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float dashSpeed;
+    private bool dash = true;
+    [SerializeField] private float dashCoolDawn;
     [SerializeField] private float jumpForce;
     [SerializeField] private float inmunityTime;
     [SerializeField] private AnimationCurve inmunityAnim;
@@ -56,6 +59,15 @@ public class PlayerController : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
         
+        //Dash
+        if (Input.GetKeyDown(KeyCode.Q) && dash)
+        {
+            Debug.Log("Dash");
+            dash = false;
+            animator.SetTrigger("Dash");
+            StartCoroutine(DashDuration());
+            StartCoroutine(DashCountdawn());
+        }
         
         //Animation
         if (inputX != 0)
@@ -125,6 +137,30 @@ public class PlayerController : MonoBehaviour
             canMove = false;
             rb.linearVelocityX = 0;
         }
+    }
+
+    IEnumerator DashDuration()
+    {
+        float inputX = Input.GetAxis("Horizontal");
+        float t = 0;
+        while (t < 0.58f)
+        {
+            t += Time.deltaTime;
+            rb.linearVelocityX = dashSpeed * inputX;
+            yield return null;
+        }
+    }
+
+    IEnumerator DashCountdawn()
+    {
+        float t = 0;
+        while (t < dashCoolDawn)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        dash = true;
     }
 
     public void FinishAttack1()
@@ -202,6 +238,7 @@ public class PlayerController : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Kinematic;
             GetComponent<Collider2D>().enabled = false;
             rb.linearVelocity  = Vector2.zero;
+            lm.GameOver();
         }
         else if (GameManager.instance.gameData.Life > 0)
         {

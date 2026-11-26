@@ -440,10 +440,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   gameData:
-    life: 100
-    maxLife: 100
-    mana: 40
-    maxMana: 40
+    life: 50
+    maxLife: 50
+    mana: 30
+    maxMana: 30
     potionsCount: 0
     maxJumps: 1
     damage: 5
@@ -32266,8 +32266,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4944748631229401336, guid: 05a9a90b7db5233469a13cf5553fc15f, type: 3}
     - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
+      propertyPath: dashSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: fireExpence
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
+      propertyPath: dashCoolDawn
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 70474396527840256, guid: 1596d4e770d45ff4db330ef3907459f9, type: 3}
       propertyPath: fireVelocity

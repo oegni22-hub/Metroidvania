@@ -6,6 +6,7 @@ public class Gema : MonoBehaviour
     [SerializeField] private string id;
     public string message;
     [SerializeField] private ParticleSystem particles;
+    private LevelManager lm;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,11 +61,16 @@ public class Gema : MonoBehaviour
                     GameManager.instance.gameData.MaxLife = 100;
                     particles.Play();
                     Time.timeScale = 0;
+                    GameManager.instance.gameData.Life = GameManager.instance.gameData.MaxLife;
+                    lm.UpdateLifeBar();
                     break;
                 case "AugMaxMana":
                     GameManager.instance.gameData.MaxMana = 50;
                     particles.Play();
                     Time.timeScale = 0;
+                    GameManager.instance.gameData.Mana = GameManager.instance.gameData.MaxMana;
+                    lm = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+                    lm.UpdateManaBar();
                     break;
                 default:
                     
