@@ -7,6 +7,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] protected float distanceToAttack;
     [SerializeField] protected float damage;
     [SerializeField] protected float life;
+    protected float initialLife;
+    [SerializeField] protected SpriteRenderer lifeBar;
+    [SerializeField] protected SpriteRenderer lifeBarBackground;
     [SerializeField] protected float attackRate;
 
     protected bool isDead;
@@ -22,6 +25,7 @@ public class EnemyController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected void Start()
     {
+        initialLife = life;
         rb = GetComponent<Rigidbody2D>();
         animator = transform.GetChild(0).GetComponent<Animator>();
     }
@@ -76,7 +80,7 @@ public class EnemyController : MonoBehaviour
     }
 
     //Attack
-    protected void Attack()
+    protected virtual void Attack()
     {
         animator.SetTrigger("Attack");
     }
@@ -85,6 +89,7 @@ public class EnemyController : MonoBehaviour
     public virtual void TakeDamage(float _damage)
     {
         life -= _damage;
+        lifeBar.size = new Vector2(life/initialLife, lifeBar.size.y);
         if (life <= 0 && isDead == false)
         {
             animator.SetTrigger("Death");
@@ -92,7 +97,8 @@ public class EnemyController : MonoBehaviour
             GetComponent<Collider2D>().enabled = false;
             isDead = true;
             rb.linearVelocity = Vector2.zero;
-            //Destroy(gameObject, 1);
+            lifeBar.size = new Vector2(0, lifeBar.size.y);
+            lifeBarBackground.size = new Vector2(0, lifeBarBackground.size.y);
         }
         else
         {

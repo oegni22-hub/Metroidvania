@@ -9,26 +9,30 @@ public class BossController : EnemyController
     [SerializeField] private BossStates bossState;
     [SerializeField] private GameObject hitSprite;
     private CapsuleCollider2D collider;
-    [SerializeField] private GameObject gema;
     
     public static Action OnBossDefeated;
     
+    [Header("Loot")]
+    [SerializeField] private GameObject gema;
+    
     [Header("Particles")]
     [SerializeField] private ParticleSystem runingParticles;
+    
     [Header("Rolling Attack")] [SerializeField]
     private float rollSpeed;
-
     private bool rolling = false;
+    
     [Header("Movement")] 
     [SerializeField] private Transform pointToMove;
 
     [Header("Spikes Attack")] [SerializeField]
     private GameObject spikesPrefab;
-
     [SerializeField] private Transform[] spikesSpawnPoints;
+    
     [Header("Roar")] [SerializeField] private GameObject[] rocasPrefab;
     [SerializeField] private Transform rocaSpawnMin, rocaSpawnMax;
     [SerializeField] private float rocasSpawnRate;
+    
     [Header("Jump")] [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float minX, maxX;
@@ -237,6 +241,7 @@ public class BossController : EnemyController
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
+        lifeBar.size = new Vector2(life/initialLife *3, lifeBar.size.y);
         if (isDead == true)
         {
             ChangeState(BossStates.Death);
@@ -244,6 +249,7 @@ public class BossController : EnemyController
             hitSprite.SetActive(false);
             runingParticles.Pause();
             runingParticles.gameObject.SetActive(false);
+            lifeBar.size = new Vector2(0, lifeBar.size.y);
         }
         else
         {

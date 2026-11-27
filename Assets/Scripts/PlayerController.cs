@@ -5,13 +5,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private float dashSpeed;
-    private bool dash = true;
-    [SerializeField] private float dashCoolDawn;
     [SerializeField] private float jumpForce;
     [SerializeField] private float inmunityTime;
     [SerializeField] private AnimationCurve inmunityAnim;
-    
+    [Header("Dash")]
+    [SerializeField] private float dashSpeed;
+    private bool dash = true;
+    [SerializeField] private float dashCoolDawn;
+    [SerializeField] private SpriteRenderer staminaBar;
+    [SerializeField] private SpriteRenderer staminaBackground;
+        
     [Header("Progectile")]
     [SerializeField] private GameObject fire;
     [SerializeField] private float fireVelocity;
@@ -29,6 +32,8 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        staminaBar.enabled = false;
+        staminaBackground.enabled = false;
         rb = GetComponent<Rigidbody2D>();
         animator =transform.GetChild(0).GetComponent<Animator>();
         lm = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -66,7 +71,7 @@ public class PlayerController : MonoBehaviour
             dash = false;
             animator.SetTrigger("Dash");
             StartCoroutine(DashDuration());
-            StartCoroutine(DashCountdawn());
+            
         }
         
         //Animation
@@ -137,10 +142,34 @@ public class PlayerController : MonoBehaviour
             canMove = false;
             rb.linearVelocityX = 0;
         }
+        
+        //Poció vida
+        if (Input.GetKeyDown(KeyCode.E) && GameManager.instance.gameData.PotionsCount > 0)
+        {
+            GameManager.instance.gameData.PotionsCount -= 1;
+            lm.UpdatePocionesText();
+            StartCoroutine(LifeRecharge());
+        }
+    }
+
+    IEnumerator LifeRecharge()
+    {
+        float newLife = Mathf.Clamp(GameManager.instance.gameData.Life +25, GameManager.instance.gameData.Life, GameManager.instance.gameData.MaxLife);
+        float t = 0;
+        while (t < 1)
+        {
+            t += Time.deltaTime;
+            GameManager.instance.gameData.Life = Mathf.Lerp(GameManager.instance.gameData.Life, newLife, t);
+            lm.UpdateLifeBar();
+            yield return null;
+        }
     }
 
     IEnumerator DashDuration()
     {
+        staminaBackground.enabled = true;
+        staminaBar.enabled = true;
+        staminaBar.size = new Vector2(0, staminaBar.size.y);
         float inputX = Input.GetAxis("Horizontal");
         float t = 0;
         while (t < 0.58f)
@@ -149,6 +178,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocityX = dashSpeed * inputX;
             yield return null;
         }
+        StartCoroutine(DashCountdawn());
     }
 
     IEnumerator DashCountdawn()
@@ -157,9 +187,11 @@ public class PlayerController : MonoBehaviour
         while (t < dashCoolDawn)
         {
             t += Time.deltaTime;
+            staminaBar.size = new Vector2(Mathf.Lerp(0, 1, t/dashCoolDawn), staminaBar.size.y);
             yield return null;
         }
-
+        staminaBar.enabled = false;
+        staminaBackground.enabled = false;
         dash = true;
     }
 
